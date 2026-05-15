@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useTranslations } from "next-intl";
+import { track } from "@/lib/analytics";
 
 type Props = {
   tourTitle?: string;
@@ -28,6 +29,10 @@ export function InquiryForm({ tourTitle, tourSlug }: Props) {
       });
       if (!res.ok) throw new Error();
       setStatus("ok");
+      track("Inquiry Submitted", {
+        tour: tourSlug ?? "general",
+        source: tourTitle ? "tour-page" : "contact-page"
+      });
       (e.target as HTMLFormElement).reset();
     } catch {
       setStatus("error");

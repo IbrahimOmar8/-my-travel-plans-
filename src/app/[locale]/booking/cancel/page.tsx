@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { unstable_setRequestLocale } from "next-intl/server";
+import { BookingCancelledTracker } from "@/components/BookingCancelledTracker";
 
 export default function CancelPage({
   params: { locale }
@@ -12,6 +13,7 @@ export default function CancelPage({
 
   return (
     <section className="container-page py-24 text-center">
+      <BookingCancelledTracker />
       <h1 className="font-display text-4xl font-semibold text-nile-900">
         {t("cancelTitle")}
       </h1>

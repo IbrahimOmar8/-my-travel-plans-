@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import type Stripe from "stripe";
+import * as Sentry from "@sentry/nextjs";
 import { stripe, isStripeConfigured } from "@/lib/stripe";
 import {
   findBookingByStripeSession,
@@ -30,6 +31,7 @@ export async function POST(req: Request) {
     event = stripe.webhooks.constructEvent(rawBody, sig, secret);
   } catch (err) {
     console.error("[webhook] invalid signature", err);
+    Sentry.captureException(err, { tags: { area: "stripe-webhook", stage: "signature" } });
     return NextResponse.json({ error: "Bad signature" }, { status: 400 });
   }
 
@@ -42,9 +44,18 @@ export async function POST(req: Request) {
     });
     const booking = await findBookingByStripeSession(session.id);
     if (booking) {
-      await sendBookingConfirmation(booking).catch((err) =>
-        console.error("[email] booking confirmation failed", err)
-      );
+      await sendBookingConfirmation(booking).catch((err) => {
+        console.error("[email] booking confirmation failed", err);
+        Sentry.captureException(err, {
+          tags: { area: "email", stage: "booking-confirmation" },
+          extra: { bookingId: booking.id }
+        });
+      });
+    } else {
+      Sentry.captureMessage("Webhook fired for unknown booking", {
+        level: "warning",
+        extra: { stripeSessionId: session.id }
+      });
     }
   }
 

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { useCurrency } from "./CurrencyProvider";
+import { track } from "@/lib/analytics";
 
 type Props = {
   tourSlug: string;
@@ -17,6 +18,7 @@ export function BookButton({ tourSlug, travelers = 2 }: Props) {
 
   async function onClick() {
     setLoading(true);
+    track("Booking Started", { tour: tourSlug, currency, travelers });
     try {
       const res = await fetch("/api/checkout", {
         method: "POST",

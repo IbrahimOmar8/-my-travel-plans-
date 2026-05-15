@@ -9,6 +9,7 @@ import {
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { CurrencyProvider } from "@/components/CurrencyProvider";
+import { Analytics } from "@/components/Analytics";
 import { locales, type Locale } from "@/i18n/config";
 import { siteUrl } from "@/lib/site";
 import "../globals.css";
@@ -71,6 +72,7 @@ export default async function LocaleLayout({
         />
       </head>
       <body className="min-h-screen flex flex-col">
+        <Analytics />
         <NextIntlClientProvider locale={locale} messages={messages}>
           <CurrencyProvider locale={locale}>
             <Header />
