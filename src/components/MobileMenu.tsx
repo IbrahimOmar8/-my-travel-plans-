@@ -12,6 +12,7 @@ export function MobileMenu() {
   const nav = [
     { href: `/${locale}/destinations`, label: t("destinations") },
     { href: `/${locale}/tours`, label: t("tours") },
+    { href: `/${locale}/blog`, label: t("journal") },
     { href: `/${locale}/about`, label: t("about") },
     { href: `/${locale}/contact`, label: t("contact") }
   ];

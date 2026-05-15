@@ -7,8 +7,11 @@ import { DestinationCard } from "@/components/DestinationCard";
 import { TourCard } from "@/components/TourCard";
 import { WhyUs } from "@/components/WhyUs";
 import { Testimonials } from "@/components/Testimonials";
+import { JournalStrip } from "@/components/JournalStrip";
 import { destinations } from "@/data/destinations";
 import { tours } from "@/data/tours";
+import { listPosts } from "@/lib/blog";
+import type { Locale } from "@/i18n/config";
 
 export default function HomePage({
   params: { locale }
@@ -19,6 +22,7 @@ export default function HomePage({
   const t = useTranslations("home");
   const featuredDestinations = destinations.slice(0, 4);
   const featuredTours = tours.slice(0, 3);
+  const recentPosts = listPosts(locale as Locale).slice(0, 3);
 
   return (
     <>
@@ -74,6 +78,7 @@ export default function HomePage({
       </section>
 
       <WhyUs />
+      <JournalStrip posts={recentPosts} locale={locale} />
       <Testimonials />
 
       <section className="container-page py-20">

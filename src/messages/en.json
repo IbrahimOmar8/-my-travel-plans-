@@ -2,9 +2,18 @@
   "nav": {
     "destinations": "Destinations",
     "tours": "Tours",
+    "journal": "Journal",
     "about": "About",
     "contact": "Contact",
     "browseTours": "Browse tours"
+  },
+  "blog": {
+    "eyebrow": "Journal",
+    "listTitle": "Field notes from the Nile",
+    "listSubtitle": "Practical guides, planning tips and stories from our trip designers on the ground.",
+    "empty": "No posts yet — check back soon.",
+    "min": "min read",
+    "relatedTitle": "Keep reading"
   },
   "hero": {
     "eyebrow": "Egypt · Jordan · Red Sea",

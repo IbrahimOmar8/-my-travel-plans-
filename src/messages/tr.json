@@ -2,9 +2,18 @@
   "nav": {
     "destinations": "Destinasyonlar",
     "tours": "Turlar",
+    "journal": "Günlük",
     "about": "Hakkımızda",
     "contact": "İletişim",
     "browseTours": "Turlara göz at"
+  },
+  "blog": {
+    "eyebrow": "Günlük",
+    "listTitle": "Nil'den saha notları",
+    "listSubtitle": "Sahadaki tur tasarımcılarımızdan pratik rehberler, planlama ipuçları ve hikâyeler.",
+    "empty": "Henüz yazı yok — yakında tekrar bakın.",
+    "min": "dk okuma",
+    "relatedTitle": "Okumaya devam edin"
   },
   "hero": {
     "eyebrow": "Mısır · Ürdün · Kızıldeniz",

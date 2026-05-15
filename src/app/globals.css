@@ -24,4 +24,43 @@
   .eyebrow {
     @apply text-xs font-semibold uppercase tracking-[0.25em] text-sand-600;
   }
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .prose-nile {
+    @apply text-base leading-relaxed text-nile-900;
+  }
+  .prose-nile h2 {
+    @apply mt-8 font-display text-2xl font-semibold text-nile-900;
+  }
+  .prose-nile h3 {
+    @apply mt-6 font-display text-xl font-semibold text-nile-900;
+  }
+  .prose-nile p {
+    @apply mt-4 text-nile-800;
+  }
+  .prose-nile ul {
+    @apply mt-4 list-disc space-y-2 pl-6 text-nile-800;
+  }
+  .prose-nile ol {
+    @apply mt-4 list-decimal space-y-2 pl-6 text-nile-800;
+  }
+  .prose-nile a {
+    @apply text-nile-600 underline hover:text-nile-700;
+  }
+  .prose-nile strong {
+    @apply font-semibold text-nile-900;
+  }
+  .prose-nile code {
+    @apply rounded bg-sand-100 px-1 py-0.5 font-mono text-sm;
+  }
 }

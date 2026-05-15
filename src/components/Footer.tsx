@@ -27,6 +27,9 @@ export function Footer() {
               <Link href={`/${locale}/tours`}>{tNav("tours")}</Link>
             </li>
             <li>
+              <Link href={`/${locale}/blog`}>{tNav("journal")}</Link>
+            </li>
+            <li>
               <Link href={`/${locale}/about`}>{tNav("about")}</Link>
             </li>
             <li>
