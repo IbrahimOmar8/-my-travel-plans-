@@ -2,10 +2,14 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useTranslations, useLocale } from "next-intl";
 import { destinations } from "@/data/destinations";
+import type { Locale } from "@/i18n/config";
 
 export function SearchBar() {
+  const t = useTranslations("search");
   const router = useRouter();
+  const locale = useLocale() as Locale;
   const [destination, setDestination] = useState("");
   const [date, setDate] = useState("");
   const [travelers, setTravelers] = useState("2");
@@ -16,7 +20,7 @@ export function SearchBar() {
     if (destination) params.set("destination", destination);
     if (date) params.set("date", date);
     if (travelers) params.set("travelers", travelers);
-    router.push(`/tours?${params.toString()}`);
+    router.push(`/${locale}/tours?${params.toString()}`);
   }
 
   return (
@@ -26,17 +30,17 @@ export function SearchBar() {
     >
       <label className="block text-left">
         <span className="text-xs font-semibold uppercase tracking-wider text-nile-700">
-          Destination
+          {t("destination")}
         </span>
         <select
           value={destination}
           onChange={(e) => setDestination(e.target.value)}
           className="mt-1 w-full rounded-lg border border-sand-200 bg-white px-3 py-2 text-nile-900 focus:border-nile-500 focus:outline-none"
         >
-          <option value="">Anywhere in Egypt & MENA</option>
+          <option value="">{t("anywhere")}</option>
           {destinations.map((d) => (
             <option key={d.slug} value={d.slug}>
-              {d.name} — {d.country}
+              {d.name[locale]} — {d.country[locale]}
             </option>
           ))}
         </select>
@@ -44,7 +48,7 @@ export function SearchBar() {
 
       <label className="block text-left">
         <span className="text-xs font-semibold uppercase tracking-wider text-nile-700">
-          Travel date
+          {t("date")}
         </span>
         <input
           type="date"
@@ -56,7 +60,7 @@ export function SearchBar() {
 
       <label className="block text-left">
         <span className="text-xs font-semibold uppercase tracking-wider text-nile-700">
-          Travellers
+          {t("travelers")}
         </span>
         <input
           type="number"
@@ -69,7 +73,7 @@ export function SearchBar() {
       </label>
 
       <button type="submit" className="btn-primary h-[42px]">
-        Search tours
+        {t("submit")}
       </button>
     </form>
   );

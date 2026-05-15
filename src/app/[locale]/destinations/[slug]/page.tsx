@@ -1,29 +1,28 @@
-import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { unstable_setRequestLocale } from "next-intl/server";
 import { destinations, getDestination } from "@/data/destinations";
 import { getToursByDestination } from "@/data/tours";
 import { TourCard } from "@/components/TourCard";
+import { locales, type Locale } from "@/i18n/config";
 
-type Params = { params: { slug: string } };
+type Params = { params: { locale: string; slug: string } };
 
 export function generateStaticParams() {
-  return destinations.map((d) => ({ slug: d.slug }));
-}
-
-export function generateMetadata({ params }: Params): Metadata {
-  const d = getDestination(params.slug);
-  if (!d) return { title: "Destination not found" };
-  return {
-    title: `${d.name}, ${d.country} — Nile Horizons`,
-    description: d.tagline
-  };
+  const combos: { locale: string; slug: string }[] = [];
+  for (const locale of locales) {
+    for (const d of destinations) combos.push({ locale, slug: d.slug });
+  }
+  return combos;
 }
 
 export default function DestinationPage({ params }: Params) {
+  unstable_setRequestLocale(params.locale);
   const destination = getDestination(params.slug);
   if (!destination) notFound();
-
+  const locale = params.locale as Locale;
+  const t = useTranslations("destination");
   const tours = getToursByDestination(destination.slug);
 
   return (
@@ -35,12 +34,12 @@ export default function DestinationPage({ params }: Params) {
         />
         <div className="absolute inset-0 -z-10 bg-gradient-to-b from-nile-900/70 to-nile-900/60" />
         <div className="container-page py-24 text-white md:py-32">
-          <p className="eyebrow text-sand-200">{destination.country}</p>
+          <p className="eyebrow text-sand-200">{destination.country[locale]}</p>
           <h1 className="mt-2 font-display text-5xl font-semibold md:text-6xl">
-            {destination.name}
+            {destination.name[locale]}
           </h1>
           <p className="mt-4 max-w-2xl text-lg text-sand-100">
-            {destination.tagline}
+            {destination.tagline[locale]}
           </p>
         </div>
       </section>
@@ -49,28 +48,32 @@ export default function DestinationPage({ params }: Params) {
         <div className="grid gap-12 lg:grid-cols-3">
           <div className="lg:col-span-2">
             <h2 className="font-display text-3xl font-semibold text-nile-900">
-              About {destination.name}
+              {t("about")} {destination.name[locale]}
             </h2>
-            <p className="mt-4 text-nile-800/90">{destination.description}</p>
+            <p className="mt-4 text-nile-800/90">
+              {destination.description[locale]}
+            </p>
           </div>
           <aside className="rounded-2xl border border-sand-200 bg-white p-6 shadow-sm">
             <h3 className="font-display text-xl font-semibold text-nile-900">
-              Quick facts
+              {t("quickFacts")}
             </h3>
             <dl className="mt-4 space-y-3 text-sm">
               <div>
                 <dt className="text-sand-600 uppercase tracking-wider text-xs">
-                  Best season
+                  {t("bestSeason")}
                 </dt>
-                <dd className="text-nile-800">{destination.bestSeason}</dd>
+                <dd className="text-nile-800">
+                  {destination.bestSeason[locale]}
+                </dd>
               </div>
               <div>
                 <dt className="text-sand-600 uppercase tracking-wider text-xs">
-                  Highlights
+                  {t("highlights")}
                 </dt>
                 <dd>
                   <ul className="mt-1 list-disc pl-5 text-nile-800">
-                    {destination.highlights.map((h) => (
+                    {destination.highlights[locale].map((h) => (
                       <li key={h}>{h}</li>
                     ))}
                   </ul>
@@ -84,19 +87,22 @@ export default function DestinationPage({ params }: Params) {
       <section className="bg-sand-100 py-16">
         <div className="container-page">
           <h2 className="font-display text-3xl font-semibold text-nile-900">
-            Tours in {destination.name}
+            {t("toursIn")} {destination.name[locale]}
           </h2>
           {tours.length === 0 ? (
             <p className="mt-6 text-nile-800/80">
-              No tours currently scheduled.{" "}
-              <Link href="/contact" className="font-semibold text-nile-600">
-                Ask us about a custom trip →
+              {t("noTours")}{" "}
+              <Link
+                href={`/${locale}/contact`}
+                className="font-semibold text-nile-600"
+              >
+                {t("askCustom")}
               </Link>
             </p>
           ) : (
             <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {tours.map((t) => (
-                <TourCard key={t.slug} tour={t} />
+              {tours.map((tour) => (
+                <TourCard key={tour.slug} tour={tour} />
               ))}
             </div>
           )}

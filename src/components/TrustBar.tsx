@@ -1,11 +1,15 @@
-const items = [
-  { stat: "12,400+", label: "Happy travellers" },
-  { stat: "4.9 / 5", label: "Average rating" },
-  { stat: "24 / 7", label: "On-the-ground support" },
-  { stat: "100 %", label: "Licensed Egyptologists" }
-];
+import { useTranslations } from "next-intl";
 
 export function TrustBar() {
+  const t = useTranslations("trustBar");
+
+  const items = [
+    { stat: "12,400+", label: t("happy") },
+    { stat: "4.9 / 5", label: t("rating") },
+    { stat: "24 / 7", label: t("support") },
+    { stat: "100 %", label: t("guides") }
+  ];
+
   return (
     <section className="bg-nile-800 py-10 text-white">
       <div className="container-page grid grid-cols-2 gap-6 md:grid-cols-4">

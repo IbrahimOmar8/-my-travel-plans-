@@ -1,37 +1,22 @@
-const features = [
-  {
-    title: "Licensed Egyptologists",
-    body: "Every guide is degree-trained and tourism-board licensed — no hop-on commentary, real scholarship."
-  },
-  {
-    title: "Vetted 4★ / 5★ hotels",
-    body: "We've stayed in every hotel we book. Sea-view, garden-view, family room — we know the difference."
-  },
-  {
-    title: "Small groups, private options",
-    body: "Capped at 12 guests, or fully private with your own guide and vehicle. No coach-tour crush."
-  },
-  {
-    title: "On-call 24/7 in country",
-    body: "WhatsApp your local trip manager any time. Lost luggage, sandstorm, missed flight — we fix it."
-  },
-  {
-    title: "Transparent pricing",
-    body: "What you pay covers entries, transfers, internal flights, and tips. No surprise add-ons mid-trip."
-  },
-  {
-    title: "Flexible cancellation",
-    body: "Cancel up to 30 days before for a full refund minus deposit. Re-book free up to 7 days out."
-  }
-];
+import { useTranslations } from "next-intl";
 
 export function WhyUs() {
+  const t = useTranslations("whyUs");
+  const features = [
+    { title: t("guides"), body: t("guidesBody") },
+    { title: t("hotels"), body: t("hotelsBody") },
+    { title: t("groups"), body: t("groupsBody") },
+    { title: t("support"), body: t("supportBody") },
+    { title: t("pricing"), body: t("pricingBody") },
+    { title: t("flexible"), body: t("flexibleBody") }
+  ];
+
   return (
     <section className="container-page py-20">
       <div className="max-w-2xl">
-        <p className="eyebrow">Why Nile Horizons</p>
+        <p className="eyebrow">{t("eyebrow")}</p>
         <h2 className="mt-2 font-display text-4xl font-semibold text-nile-900">
-          Six reasons our guests come back.
+          {t("title")}
         </h2>
       </div>
 

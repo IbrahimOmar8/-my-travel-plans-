@@ -4,6 +4,7 @@ out/
 build/
 dist/
 .env*.local
+.env
 .DS_Store
 *.log
 npm-debug.log*
@@ -13,3 +14,4 @@ yarn-error.log*
 next-env.d.ts
 .idea/
 .vscode/
+.data/

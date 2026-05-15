@@ -1,10 +1,14 @@
 import Link from "next/link";
+import { useLocale } from "next-intl";
 import type { Destination } from "@/lib/types";
+import type { Locale } from "@/i18n/config";
 
 export function DestinationCard({ destination }: { destination: Destination }) {
+  const locale = useLocale() as Locale;
+
   return (
     <Link
-      href={`/destinations/${destination.slug}`}
+      href={`/${locale}/destinations/${destination.slug}`}
       className="group relative block aspect-[4/5] overflow-hidden rounded-2xl shadow-md ring-1 ring-black/5"
     >
       <div
@@ -15,13 +19,13 @@ export function DestinationCard({ destination }: { destination: Destination }) {
 
       <div className="absolute inset-x-0 bottom-0 p-5 text-white">
         <p className="text-xs uppercase tracking-wider text-sand-200">
-          {destination.country}
+          {destination.country[locale]}
         </p>
         <h3 className="mt-1 font-display text-2xl font-semibold">
-          {destination.name}
+          {destination.name[locale]}
         </h3>
         <p className="mt-1 text-sm text-sand-100 line-clamp-2">
-          {destination.tagline}
+          {destination.tagline[locale]}
         </p>
       </div>
     </Link>

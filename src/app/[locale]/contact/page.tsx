@@ -1,34 +1,33 @@
-import type { Metadata } from "next";
+import { useTranslations } from "next-intl";
+import { unstable_setRequestLocale } from "next-intl/server";
 import { InquiryForm } from "@/components/InquiryForm";
 
-export const metadata: Metadata = {
-  title: "Contact — Nile Horizons",
-  description:
-    "Get in touch with the Nile Horizons team. Email, WhatsApp 24/7, or send a quote request."
-};
+export default function ContactPage({
+  params: { locale }
+}: {
+  params: { locale: string };
+}) {
+  unstable_setRequestLocale(locale);
+  const t = useTranslations("contact");
 
-export default function ContactPage() {
   return (
     <section className="container-page py-16">
-      <p className="eyebrow">Contact</p>
+      <p className="eyebrow">{t("eyebrow")}</p>
       <h1 className="mt-2 font-display text-5xl font-semibold text-nile-900">
-        Talk to a trip designer.
+        {t("title")}
       </h1>
-      <p className="mt-4 max-w-2xl text-nile-800/80">
-        Tell us a little about the trip you're dreaming of and we'll reply with
-        a tailored quote within 24 hours.
-      </p>
+      <p className="mt-4 max-w-2xl text-nile-800/80">{t("subtitle")}</p>
 
       <div className="mt-12 grid gap-10 lg:grid-cols-[1.4fr_1fr]">
         <InquiryForm />
 
         <aside className="space-y-6">
-          <Card title="Cairo office">
-            5 Talaat Harb St., Downtown Cairo, Egypt
+          <Card title={t("office")}>
+            {t("officeAddress")}
             <br />
-            Sunday – Thursday, 9:00 – 18:00 EET
+            {t("officeHours")}
           </Card>
-          <Card title="WhatsApp (24/7)">
+          <Card title={t("whatsapp")}>
             <a
               className="font-semibold text-nile-600"
               href="https://wa.me/201000000000"
@@ -36,7 +35,7 @@ export default function ContactPage() {
               +20 100 000 0000
             </a>
           </Card>
-          <Card title="Email">
+          <Card title={t("email")}>
             <a
               className="font-semibold text-nile-600"
               href="mailto:hello@nilehorizons.example"
@@ -44,8 +43,8 @@ export default function ContactPage() {
               hello@nilehorizons.example
             </a>
           </Card>
-          <Card title="Trade & B2B">
-            For travel agents and tour operators wanting to resell our trips:
+          <Card title={t("trade")}>
+            {t("tradeBody")}
             <br />
             <a
               className="font-semibold text-nile-600"

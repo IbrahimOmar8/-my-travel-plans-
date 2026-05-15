@@ -1,29 +1,30 @@
-import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { unstable_setRequestLocale } from "next-intl/server";
 import { tours, getTour } from "@/data/tours";
 import { getDestination } from "@/data/destinations";
 import { InquiryForm } from "@/components/InquiryForm";
+import { BookButton } from "@/components/BookButton";
+import { categoryLabel } from "@/lib/types";
+import { locales, type Locale } from "@/i18n/config";
 
-type Params = { params: { slug: string } };
+type Params = { params: { locale: string; slug: string } };
 
 export function generateStaticParams() {
-  return tours.map((t) => ({ slug: t.slug }));
-}
-
-export function generateMetadata({ params }: Params): Metadata {
-  const t = getTour(params.slug);
-  if (!t) return { title: "Tour not found" };
-  return {
-    title: `${t.title} — ${t.durationDays} days — Nile Horizons`,
-    description: t.summary
-  };
+  const combos: { locale: string; slug: string }[] = [];
+  for (const locale of locales) {
+    for (const tour of tours) combos.push({ locale, slug: tour.slug });
+  }
+  return combos;
 }
 
 export default function TourPage({ params }: Params) {
+  unstable_setRequestLocale(params.locale);
   const tour = getTour(params.slug);
   if (!tour) notFound();
-
+  const locale = params.locale as Locale;
+  const t = useTranslations("tour");
   const destination = getDestination(tour.destinationSlug);
 
   return (
@@ -37,21 +38,23 @@ export default function TourPage({ params }: Params) {
         <div className="container-page py-20 text-white md:py-28">
           {destination && (
             <Link
-              href={`/destinations/${destination.slug}`}
+              href={`/${locale}/destinations/${destination.slug}`}
               className="text-xs uppercase tracking-wider text-sand-200 hover:text-white"
             >
-              {destination.name} · {destination.country}
+              {destination.name[locale]} · {destination.country[locale]}
             </Link>
           )}
           <h1 className="mt-3 max-w-3xl font-display text-4xl font-semibold md:text-5xl">
-            {tour.title}
+            {tour.title[locale]}
           </h1>
           <div className="mt-5 flex flex-wrap items-center gap-4 text-sm">
-            <Badge>{tour.durationDays} days</Badge>
-            <Badge>{tour.category}</Badge>
-            <Badge>{tour.groupSize}</Badge>
+            <Badge>
+              {tour.durationDays} {t("day").toLowerCase()}
+            </Badge>
+            <Badge>{categoryLabel[tour.category][locale]}</Badge>
+            <Badge>{tour.groupSize[locale]}</Badge>
             <span>
-              ★ {tour.rating.toFixed(1)} ({tour.reviewCount} reviews)
+              ★ {tour.rating.toFixed(1)} ({tour.reviewCount} {t("reviews")})
             </span>
           </div>
         </div>
@@ -62,17 +65,17 @@ export default function TourPage({ params }: Params) {
           <div className="space-y-12 lg:col-span-2">
             <div>
               <h2 className="font-display text-3xl font-semibold text-nile-900">
-                Trip overview
+                {t("overview")}
               </h2>
-              <p className="mt-3 text-nile-800/90">{tour.summary}</p>
+              <p className="mt-3 text-nile-800/90">{tour.summary[locale]}</p>
             </div>
 
             <div>
               <h2 className="font-display text-2xl font-semibold text-nile-900">
-                Highlights
+                {t("highlights")}
               </h2>
               <ul className="mt-4 grid gap-2 sm:grid-cols-2">
-                {tour.highlights.map((h) => (
+                {tour.highlights[locale].map((h) => (
                   <li
                     key={h}
                     className="flex items-start gap-2 text-sm text-nile-800"
@@ -86,7 +89,7 @@ export default function TourPage({ params }: Params) {
 
             <div>
               <h2 className="font-display text-2xl font-semibold text-nile-900">
-                Day-by-day itinerary
+                {t("itinerary")}
               </h2>
               <ol className="mt-6 space-y-4">
                 {tour.itinerary.map((item) => (
@@ -95,13 +98,13 @@ export default function TourPage({ params }: Params) {
                     className="rounded-2xl border border-sand-200 bg-white p-5 shadow-sm"
                   >
                     <p className="text-xs font-semibold uppercase tracking-wider text-sand-600">
-                      Day {item.day}
+                      {t("day")} {item.day}
                     </p>
                     <p className="mt-1 font-display text-lg font-semibold text-nile-900">
-                      {item.title}
+                      {item.title[locale]}
                     </p>
                     <p className="mt-1 text-sm text-nile-800/80">
-                      {item.details}
+                      {item.details[locale]}
                     </p>
                   </li>
                 ))}
@@ -111,10 +114,10 @@ export default function TourPage({ params }: Params) {
             <div className="grid gap-6 sm:grid-cols-2">
               <div>
                 <h3 className="font-display text-xl font-semibold text-nile-900">
-                  Included
+                  {t("included")}
                 </h3>
                 <ul className="mt-3 space-y-2 text-sm text-nile-800">
-                  {tour.includes.map((i) => (
+                  {tour.includes[locale].map((i) => (
                     <li key={i} className="flex items-start gap-2">
                       <span className="mt-0.5 text-nile-500">✓</span> {i}
                     </li>
@@ -123,10 +126,10 @@ export default function TourPage({ params }: Params) {
               </div>
               <div>
                 <h3 className="font-display text-xl font-semibold text-nile-900">
-                  Not included
+                  {t("notIncluded")}
                 </h3>
                 <ul className="mt-3 space-y-2 text-sm text-nile-800">
-                  {tour.excludes.map((i) => (
+                  {tour.excludes[locale].map((i) => (
                     <li key={i} className="flex items-start gap-2">
                       <span className="mt-0.5 text-sand-600">×</span> {i}
                     </li>
@@ -139,35 +142,33 @@ export default function TourPage({ params }: Params) {
           <aside className="space-y-6">
             <div className="rounded-2xl border border-sand-200 bg-white p-6 shadow-sm">
               <p className="text-xs uppercase tracking-wider text-sand-600">
-                From
+                {t("from")}
               </p>
               <p className="mt-1 font-display text-4xl font-semibold text-nile-800">
                 ${tour.priceUSD.toLocaleString()}
               </p>
-              <p className="text-sm text-nile-700/70">per person, twin share</p>
+              <p className="text-sm text-nile-700/70">{t("perPerson")}</p>
               <ul className="mt-5 space-y-2 text-sm text-nile-800">
-                <li>✓ Free cancellation up to 30 days</li>
-                <li>✓ Reserve with 20% deposit</li>
-                <li>✓ Pay balance 30 days before departure</li>
+                <li>{t("freeCancel")}</li>
+                <li>{t("deposit")}</li>
+                <li>{t("balance")}</li>
               </ul>
-              <a
-                href="#inquiry"
-                className="btn-primary mt-6 w-full"
-              >
-                Request a quote
+              <BookButton tourSlug={tour.slug} />
+              <a href="#inquiry" className="btn-secondary mt-3 w-full">
+                {t("requestQuote")}
               </a>
               <a
                 href="https://wa.me/201000000000"
-                className="btn-secondary mt-3 w-full"
+                className="mt-3 block text-center text-sm font-semibold text-nile-600 hover:text-nile-700"
               >
-                Chat on WhatsApp
+                {t("chatWhatsapp")}
               </a>
             </div>
           </aside>
         </div>
 
         <div id="inquiry" className="mt-20 max-w-3xl">
-          <InquiryForm tourTitle={tour.title} tourSlug={tour.slug} />
+          <InquiryForm tourTitle={tour.title[locale]} tourSlug={tour.slug} />
         </div>
       </section>
     </article>

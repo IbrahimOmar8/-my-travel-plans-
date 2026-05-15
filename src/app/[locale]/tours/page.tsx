@@ -1,14 +1,11 @@
-import type { Metadata } from "next";
+import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { unstable_setRequestLocale } from "next-intl/server";
 import { TourCard } from "@/components/TourCard";
 import { tours } from "@/data/tours";
 import { destinations } from "@/data/destinations";
-import Link from "next/link";
-
-export const metadata: Metadata = {
-  title: "All Tours — Nile Horizons",
-  description:
-    "Browse every Nile Horizons tour: cultural Egypt itineraries, Nile cruises, Red Sea beach escapes, family trips and Egypt + Jordan combinations."
-};
+import { categoryLabel } from "@/lib/types";
+import type { Locale } from "@/i18n/config";
 
 type SearchParams = {
   destination?: string;
@@ -16,45 +13,54 @@ type SearchParams = {
 };
 
 export default function ToursPage({
+  params: { locale },
   searchParams
 }: {
+  params: { locale: string };
   searchParams: SearchParams;
 }) {
-  const filtered = tours.filter((t) => {
-    if (searchParams.destination && t.destinationSlug !== searchParams.destination)
+  unstable_setRequestLocale(locale);
+  const t = useTranslations("toursPage");
+  const lc = locale as Locale;
+
+  const filtered = tours.filter((tour) => {
+    if (searchParams.destination && tour.destinationSlug !== searchParams.destination)
       return false;
-    if (searchParams.category && t.category !== searchParams.category)
+    if (searchParams.category && tour.category !== searchParams.category)
       return false;
     return true;
   });
 
-  const categories = Array.from(new Set(tours.map((t) => t.category)));
+  const categories = Array.from(new Set(tours.map((tour) => tour.category)));
 
   return (
     <section className="container-page py-16">
-      <p className="eyebrow">All tours</p>
+      <p className="eyebrow">{t("eyebrow")}</p>
       <h1 className="mt-2 font-display text-5xl font-semibold text-nile-900">
-        Find your trip.
+        {t("title")}
       </h1>
       <p className="mt-4 max-w-2xl text-nile-800/80">
-        {filtered.length} tour{filtered.length === 1 ? "" : "s"} match your
-        filters. Anything missing?{" "}
-        <Link href="/contact" className="font-semibold text-nile-600">
-          Tell us what you're looking for →
+        {t("matchCount", { count: filtered.length })}{" "}
+        {t("missing")}{" "}
+        <Link
+          href={`/${locale}/contact`}
+          className="font-semibold text-nile-600"
+        >
+          {t("tellUs")}
         </Link>
       </p>
 
       <div className="mt-8 flex flex-wrap gap-2">
         <FilterChip
-          label="All destinations"
-          href="/tours"
+          label={t("allDestinations")}
+          href={`/${locale}/tours`}
           active={!searchParams.destination && !searchParams.category}
         />
         {destinations.map((d) => (
           <FilterChip
             key={d.slug}
-            label={d.name}
-            href={`/tours?destination=${d.slug}`}
+            label={d.name[lc]}
+            href={`/${locale}/tours?destination=${d.slug}`}
             active={searchParams.destination === d.slug}
           />
         ))}
@@ -64,21 +70,19 @@ export default function ToursPage({
         {categories.map((c) => (
           <FilterChip
             key={c}
-            label={c}
-            href={`/tours?category=${c}`}
+            label={categoryLabel[c][lc]}
+            href={`/${locale}/tours?category=${c}`}
             active={searchParams.category === c}
           />
         ))}
       </div>
 
       {filtered.length === 0 ? (
-        <p className="mt-16 text-center text-nile-800/80">
-          No tours match those filters yet.
-        </p>
+        <p className="mt-16 text-center text-nile-800/80">{t("noResults")}</p>
       ) : (
         <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {filtered.map((t) => (
-            <TourCard key={t.slug} tour={t} />
+          {filtered.map((tour) => (
+            <TourCard key={tour.slug} tour={tour} />
           ))}
         </div>
       )}
