@@ -2,7 +2,7 @@ import { listBookings } from "@/lib/storage";
 
 export const dynamic = "force-dynamic";
 
-const statusStyle = {
+const statusStyle: Record<string, string> = {
   paid: "bg-emerald-100 text-emerald-800",
   pending: "bg-amber-100 text-amber-800",
   cancelled: "bg-slate-200 text-slate-700"
@@ -13,11 +13,19 @@ export default async function BookingsPage() {
 
   return (
     <div className="space-y-6">
-      <header>
-        <h1 className="text-2xl font-semibold">Bookings</h1>
-        <p className="text-sm text-slate-500">
-          {bookings.length} total · webhook-driven status updates
-        </p>
+      <header className="flex flex-wrap items-end justify-between gap-3">
+        <div>
+          <h1 className="text-2xl font-semibold">Bookings</h1>
+          <p className="text-sm text-slate-500">
+            {bookings.length} total · webhook-driven status updates
+          </p>
+        </div>
+        <a
+          href="/api/admin/export?type=bookings"
+          className="rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50"
+        >
+          Export CSV ↓
+        </a>
       </header>
 
       <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
@@ -72,7 +80,7 @@ export default async function BookingsPage() {
                 <td className="px-4 py-3 align-top">
                   <span
                     className={`inline-flex rounded-full px-2 py-0.5 text-xs font-semibold ${
-                      statusStyle[b.status]
+                      statusStyle[b.status] ?? "bg-slate-100 text-slate-700"
                     }`}
                   >
                     {b.status}

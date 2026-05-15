@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
@@ -6,8 +7,10 @@ import { tours, getTour } from "@/data/tours";
 import { getDestination } from "@/data/destinations";
 import { InquiryForm } from "@/components/InquiryForm";
 import { BookButton } from "@/components/BookButton";
+import { Price } from "@/components/Price";
 import { categoryLabel } from "@/lib/types";
 import { locales, type Locale } from "@/i18n/config";
+import { siteUrl } from "@/lib/site";
 
 type Params = { params: { locale: string; slug: string } };
 
@@ -17,6 +20,28 @@ export function generateStaticParams() {
     for (const tour of tours) combos.push({ locale, slug: tour.slug });
   }
   return combos;
+}
+
+export function generateMetadata({ params }: Params): Metadata {
+  const tour = getTour(params.slug);
+  if (!tour) return {};
+  const locale = params.locale as Locale;
+  return {
+    title: tour.title[locale],
+    description: tour.summary[locale],
+    alternates: {
+      canonical: `${siteUrl}/${locale}/tours/${tour.slug}`,
+      languages: Object.fromEntries(
+        locales.map((l) => [l, `${siteUrl}/${l}/tours/${tour.slug}`])
+      )
+    },
+    openGraph: {
+      title: tour.title[locale],
+      description: tour.summary[locale],
+      images: [tour.image],
+      type: "article"
+    }
+  };
 }
 
 export default function TourPage({ params }: Params) {
@@ -144,9 +169,10 @@ export default function TourPage({ params }: Params) {
               <p className="text-xs uppercase tracking-wider text-sand-600">
                 {t("from")}
               </p>
-              <p className="mt-1 font-display text-4xl font-semibold text-nile-800">
-                ${tour.priceUSD.toLocaleString()}
-              </p>
+              <Price
+                usd={tour.priceUSD}
+                className="mt-1 block font-display text-4xl font-semibold text-nile-800"
+              />
               <p className="text-sm text-nile-700/70">{t("perPerson")}</p>
               <ul className="mt-5 space-y-2 text-sm text-nile-800">
                 <li>{t("freeCancel")}</li>

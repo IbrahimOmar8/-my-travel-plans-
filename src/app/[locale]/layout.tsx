@@ -1,22 +1,49 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { NextIntlClientProvider } from "next-intl";
-import { unstable_setRequestLocale, getMessages } from "next-intl/server";
+import {
+  unstable_setRequestLocale,
+  getMessages,
+  getTranslations
+} from "next-intl/server";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { CurrencyProvider } from "@/components/CurrencyProvider";
 import { locales, type Locale } from "@/i18n/config";
+import { siteUrl } from "@/lib/site";
 import "../globals.css";
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
 }
 
-export const metadata: Metadata = {
-  title: "Nile Horizons — Curated Tours of Egypt & the Middle East",
-  description:
-    "Hand-crafted small-group and private tours of Egypt, Jordan and the Red Sea.",
-  metadataBase: new URL("https://nilehorizons.example")
-};
+export async function generateMetadata({
+  params: { locale }
+}: {
+  params: { locale: string };
+}): Promise<Metadata> {
+  const t = await getTranslations({ locale, namespace: "hero" });
+  return {
+    metadataBase: new URL(siteUrl),
+    title: {
+      default: "Nile Horizons",
+      template: "%s · Nile Horizons"
+    },
+    description: t("subtitle"),
+    alternates: {
+      canonical: `${siteUrl}/${locale}`,
+      languages: Object.fromEntries(locales.map((l) => [l, `${siteUrl}/${l}`]))
+    },
+    openGraph: {
+      type: "website",
+      title: "Nile Horizons",
+      description: t("subtitle"),
+      url: `${siteUrl}/${locale}`,
+      siteName: "Nile Horizons",
+      locale: locale === "en" ? "en_US" : locale === "ru" ? "ru_RU" : "tr_TR"
+    }
+  };
+}
 
 export default async function LocaleLayout({
   children,
@@ -45,9 +72,11 @@ export default async function LocaleLayout({
       </head>
       <body className="min-h-screen flex flex-col">
         <NextIntlClientProvider locale={locale} messages={messages}>
-          <Header />
-          <main className="flex-1">{children}</main>
-          <Footer />
+          <CurrencyProvider locale={locale}>
+            <Header />
+            <main className="flex-1">{children}</main>
+            <Footer />
+          </CurrencyProvider>
         </NextIntlClientProvider>
       </body>
     </html>

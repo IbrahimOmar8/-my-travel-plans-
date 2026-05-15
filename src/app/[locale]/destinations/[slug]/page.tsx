@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
@@ -6,6 +7,7 @@ import { destinations, getDestination } from "@/data/destinations";
 import { getToursByDestination } from "@/data/tours";
 import { TourCard } from "@/components/TourCard";
 import { locales, type Locale } from "@/i18n/config";
+import { siteUrl } from "@/lib/site";
 
 type Params = { params: { locale: string; slug: string } };
 
@@ -15,6 +17,30 @@ export function generateStaticParams() {
     for (const d of destinations) combos.push({ locale, slug: d.slug });
   }
   return combos;
+}
+
+export function generateMetadata({ params }: Params): Metadata {
+  const destination = getDestination(params.slug);
+  if (!destination) return {};
+  const locale = params.locale as Locale;
+  return {
+    title: `${destination.name[locale]}, ${destination.country[locale]}`,
+    description: destination.description[locale],
+    alternates: {
+      canonical: `${siteUrl}/${locale}/destinations/${destination.slug}`,
+      languages: Object.fromEntries(
+        locales.map((l) => [
+          l,
+          `${siteUrl}/${l}/destinations/${destination.slug}`
+        ])
+      )
+    },
+    openGraph: {
+      title: destination.name[locale],
+      description: destination.tagline[locale],
+      images: [destination.heroImage]
+    }
+  };
 }
 
 export default function DestinationPage({ params }: Params) {

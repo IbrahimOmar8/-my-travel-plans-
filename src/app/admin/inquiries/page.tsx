@@ -7,11 +7,19 @@ export default async function InquiriesPage() {
 
   return (
     <div className="space-y-6">
-      <header>
-        <h1 className="text-2xl font-semibold">Inquiries</h1>
-        <p className="text-sm text-slate-500">
-          {inquiries.length} total · most recent first
-        </p>
+      <header className="flex flex-wrap items-end justify-between gap-3">
+        <div>
+          <h1 className="text-2xl font-semibold">Inquiries</h1>
+          <p className="text-sm text-slate-500">
+            {inquiries.length} total · most recent first
+          </p>
+        </div>
+        <a
+          href="/api/admin/export?type=inquiries"
+          className="rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50"
+        >
+          Export CSV ↓
+        </a>
       </header>
 
       <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">

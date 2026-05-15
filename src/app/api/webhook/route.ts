@@ -1,13 +1,20 @@
 import { NextResponse } from "next/server";
 import type Stripe from "stripe";
 import { stripe, isStripeConfigured } from "@/lib/stripe";
-import { updateBookingByStripeSession } from "@/lib/storage";
+import {
+  findBookingByStripeSession,
+  updateBookingByStripeSession
+} from "@/lib/storage";
+import { sendBookingConfirmation } from "@/lib/email";
 
 export const runtime = "nodejs";
 
 export async function POST(req: Request) {
   if (!isStripeConfigured() || !stripe) {
-    return NextResponse.json({ error: "Stripe not configured" }, { status: 503 });
+    return NextResponse.json(
+      { error: "Stripe not configured" },
+      { status: 503 }
+    );
   }
 
   const sig = req.headers.get("stripe-signature");
@@ -30,9 +37,15 @@ export async function POST(req: Request) {
     const session = event.data.object as Stripe.Checkout.Session;
     await updateBookingByStripeSession(session.id, {
       status: "paid",
-      customerEmail: session.customer_details?.email ?? undefined,
-      customerName: session.customer_details?.name ?? undefined
+      customerEmail: session.customer_details?.email ?? null,
+      customerName: session.customer_details?.name ?? null
     });
+    const booking = await findBookingByStripeSession(session.id);
+    if (booking) {
+      await sendBookingConfirmation(booking).catch((err) =>
+        console.error("[email] booking confirmation failed", err)
+      );
+    }
   }
 
   if (event.type === "checkout.session.expired") {

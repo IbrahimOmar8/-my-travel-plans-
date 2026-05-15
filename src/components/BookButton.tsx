@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
+import { useCurrency } from "./CurrencyProvider";
 
 type Props = {
   tourSlug: string;
@@ -11,6 +12,7 @@ type Props = {
 export function BookButton({ tourSlug, travelers = 2 }: Props) {
   const t = useTranslations("tour");
   const locale = useLocale();
+  const { currency } = useCurrency();
   const [loading, setLoading] = useState(false);
 
   async function onClick() {
@@ -19,7 +21,7 @@ export function BookButton({ tourSlug, travelers = 2 }: Props) {
       const res = await fetch("/api/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ tourSlug, travelers, locale })
+        body: JSON.stringify({ tourSlug, travelers, locale, currency })
       });
       const data = await res.json();
       if (data.url) {

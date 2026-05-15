@@ -1,10 +1,21 @@
 import { NextResponse } from "next/server";
 import { stripe, isStripeConfigured } from "@/lib/stripe";
 import { getTour } from "@/data/tours";
-import { addBooking, newId } from "@/lib/storage";
+import { addBooking } from "@/lib/storage";
 import { defaultLocale, locales, type Locale } from "@/i18n/config";
+import {
+  convertFromUSD,
+  currencyInfo,
+  isCurrency,
+  type Currency
+} from "@/lib/currency";
 
 const DEPOSIT_FRACTION = 0.2;
+
+function stripeUnitAmount(amount: number, currency: Currency) {
+  const noDecimal = currency === "RUB" ? false : true;
+  return Math.round(amount * (noDecimal ? 100 : 100));
+}
 
 export async function POST(req: Request) {
   const body = await req.json().catch(() => null);
@@ -21,9 +32,12 @@ export async function POST(req: Request) {
   const locale: Locale = locales.includes(body.locale)
     ? body.locale
     : defaultLocale;
+  const currency: Currency = isCurrency(body.currency) ? body.currency : "USD";
 
   const totalUSD = tour.priceUSD * travelers;
   const depositUSD = Math.round(totalUSD * DEPOSIT_FRACTION);
+  const depositInCurrency = Math.round(convertFromUSD(depositUSD, currency));
+  const totalInCurrency = Math.round(convertFromUSD(totalUSD, currency));
 
   const origin =
     req.headers.get("origin") ||
@@ -31,17 +45,15 @@ export async function POST(req: Request) {
     "http://localhost:3000";
 
   if (!isStripeConfigured() || !stripe) {
-    const fakeId = newId("stub");
     await addBooking({
-      id: newId("bk"),
-      stripeSessionId: fakeId,
-      createdAt: new Date().toISOString(),
+      stripeSessionId: `stub_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`,
       status: "pending",
       tourSlug: tour.slug,
       tourTitle: tour.title[locale],
       travelers,
       depositUSD,
-      totalUSD
+      totalUSD,
+      currency: currency.toLowerCase()
     });
     return NextResponse.json({
       url: `${origin}/${locale}/booking/success?demo=1`,
@@ -56,11 +68,11 @@ export async function POST(req: Request) {
       line_items: [
         {
           price_data: {
-            currency: "usd",
-            unit_amount: depositUSD * 100,
+            currency: currency.toLowerCase(),
+            unit_amount: stripeUnitAmount(depositInCurrency, currency),
             product_data: {
               name: `Deposit (20%) — ${tour.title[locale]}`,
-              description: `Reservation deposit for ${travelers} traveller(s). Total trip cost: $${totalUSD.toLocaleString()}.`,
+              description: `Reservation deposit for ${travelers} traveller(s). Total trip cost: ${currencyInfo[currency].symbol}${totalInCurrency.toLocaleString()}.`,
               images: [tour.image]
             }
           },
@@ -73,28 +85,25 @@ export async function POST(req: Request) {
         tourSlug: tour.slug,
         tourTitle: tour.title[locale],
         travelers: String(travelers),
-        totalUSD: String(totalUSD)
+        totalUSD: String(totalUSD),
+        currency
       }
     });
 
     await addBooking({
-      id: newId("bk"),
       stripeSessionId: session.id,
-      createdAt: new Date().toISOString(),
       status: "pending",
       tourSlug: tour.slug,
       tourTitle: tour.title[locale],
       travelers,
       depositUSD,
-      totalUSD
+      totalUSD,
+      currency: currency.toLowerCase()
     });
 
     return NextResponse.json({ url: session.url });
   } catch (err) {
     console.error("[checkout] stripe error", err);
-    return NextResponse.json(
-      { error: "Stripe error" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Stripe error" }, { status: 500 });
   }
 }

@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
-import { addInquiry, newId, type Inquiry } from "@/lib/storage";
+import { addInquiry } from "@/lib/storage";
+import { sendInquiryEmails } from "@/lib/email";
 
 export async function POST(req: Request) {
   const body = await req.json().catch(() => null);
@@ -10,9 +11,7 @@ export async function POST(req: Request) {
     );
   }
 
-  const inquiry: Inquiry = {
-    id: newId("inq"),
-    createdAt: new Date().toISOString(),
+  const inquiry = await addInquiry({
     name: String(body.name),
     email: String(body.email),
     country: body.country ? String(body.country) : undefined,
@@ -21,9 +20,11 @@ export async function POST(req: Request) {
     notes: body.notes ? String(body.notes) : undefined,
     tourSlug: body.tourSlug ? String(body.tourSlug) : undefined,
     tourTitle: body.tourTitle ? String(body.tourTitle) : undefined
-  };
+  });
 
-  await addInquiry(inquiry);
-  console.log("[inquiry] saved", inquiry.id);
+  await sendInquiryEmails(inquiry).catch((err) =>
+    console.error("[email] inquiry send failed", err)
+  );
+
   return NextResponse.json({ ok: true, id: inquiry.id });
 }

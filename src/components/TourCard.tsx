@@ -3,6 +3,7 @@ import { useLocale, useTranslations } from "next-intl";
 import type { Tour } from "@/lib/types";
 import { categoryLabel } from "@/lib/types";
 import type { Locale } from "@/i18n/config";
+import { Price } from "./Price";
 
 export function TourCard({ tour }: { tour: Tour }) {
   const locale = useLocale() as Locale;
@@ -49,9 +50,10 @@ export function TourCard({ tour }: { tour: Tour }) {
             <p className="text-xs uppercase tracking-wider text-sand-600">
               {t("from")}
             </p>
-            <p className="font-display text-2xl font-semibold text-nile-800">
-              ${tour.priceUSD.toLocaleString()}
-            </p>
+            <Price
+              usd={tour.priceUSD}
+              className="font-display text-2xl font-semibold text-nile-800"
+            />
           </div>
           <Link
             href={`/${locale}/tours/${tour.slug}`}

@@ -1,34 +1,10 @@
-import { promises as fs } from "fs";
-import path from "path";
+import { prisma } from "./db";
+import type { Inquiry as PrismaInquiry, Booking as PrismaBooking } from "@prisma/client";
 
-const dataDir = path.join(process.cwd(), ".data");
+export type Inquiry = PrismaInquiry;
+export type Booking = PrismaBooking;
 
-async function ensure() {
-  await fs.mkdir(dataDir, { recursive: true });
-}
-
-async function readJSON<T>(file: string, fallback: T): Promise<T> {
-  await ensure();
-  try {
-    const content = await fs.readFile(path.join(dataDir, file), "utf-8");
-    return JSON.parse(content) as T;
-  } catch {
-    return fallback;
-  }
-}
-
-async function writeJSON(file: string, data: unknown) {
-  await ensure();
-  await fs.writeFile(
-    path.join(dataDir, file),
-    JSON.stringify(data, null, 2),
-    "utf-8"
-  );
-}
-
-export type Inquiry = {
-  id: string;
-  createdAt: string;
+export type NewInquiry = {
   name: string;
   email: string;
   country?: string;
@@ -39,57 +15,54 @@ export type Inquiry = {
   tourTitle?: string;
 };
 
-export type Booking = {
-  id: string;
+export type NewBooking = {
   stripeSessionId: string;
-  createdAt: string;
-  status: "pending" | "paid" | "cancelled";
+  status?: string;
   tourSlug: string;
   tourTitle: string;
   travelers: number;
   depositUSD: number;
   totalUSD: number;
-  customerEmail?: string;
-  customerName?: string;
+  currency?: string;
 };
 
-const INQUIRIES = "inquiries.json";
-const BOOKINGS = "bookings.json";
-
 export async function listInquiries(): Promise<Inquiry[]> {
-  return readJSON<Inquiry[]>(INQUIRIES, []);
+  return prisma.inquiry.findMany({ orderBy: { createdAt: "desc" } });
 }
 
-export async function addInquiry(inquiry: Inquiry) {
-  const all = await listInquiries();
-  all.unshift(inquiry);
-  await writeJSON(INQUIRIES, all);
+export async function addInquiry(data: NewInquiry): Promise<Inquiry> {
+  return prisma.inquiry.create({ data });
 }
 
 export async function listBookings(): Promise<Booking[]> {
-  return readJSON<Booking[]>(BOOKINGS, []);
+  return prisma.booking.findMany({ orderBy: { createdAt: "desc" } });
 }
 
-export async function addBooking(booking: Booking) {
-  const all = await listBookings();
-  all.unshift(booking);
-  await writeJSON(BOOKINGS, all);
+export async function addBooking(data: NewBooking): Promise<Booking> {
+  return prisma.booking.create({
+    data: {
+      stripeSessionId: data.stripeSessionId,
+      status: data.status ?? "pending",
+      tourSlug: data.tourSlug,
+      tourTitle: data.tourTitle,
+      travelers: data.travelers,
+      depositUSD: data.depositUSD,
+      totalUSD: data.totalUSD,
+      currency: data.currency ?? "usd"
+    }
+  });
 }
 
 export async function updateBookingByStripeSession(
   stripeSessionId: string,
-  patch: Partial<Booking>
+  patch: Partial<Pick<Booking, "status" | "customerEmail" | "customerName">>
 ) {
-  const all = await listBookings();
-  const idx = all.findIndex((b) => b.stripeSessionId === stripeSessionId);
-  if (idx >= 0) {
-    all[idx] = { ...all[idx], ...patch };
-    await writeJSON(BOOKINGS, all);
-  }
+  return prisma.booking.update({
+    where: { stripeSessionId },
+    data: patch
+  }).catch(() => null);
 }
 
-export function newId(prefix: string) {
-  return `${prefix}_${Date.now().toString(36)}_${Math.random()
-    .toString(36)
-    .slice(2, 8)}`;
+export async function findBookingByStripeSession(stripeSessionId: string) {
+  return prisma.booking.findUnique({ where: { stripeSessionId } });
 }

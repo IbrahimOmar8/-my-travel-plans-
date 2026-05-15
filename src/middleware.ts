@@ -32,8 +32,12 @@ function isAdminAuthed(req: NextRequest) {
 export default function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
-  if (pathname.startsWith("/admin")) {
+  if (pathname.startsWith("/admin") || pathname.startsWith("/api/admin")) {
     if (!isAdminAuthed(req)) return unauthorized();
+    return NextResponse.next();
+  }
+
+  if (pathname.startsWith("/api")) {
     return NextResponse.next();
   }
 
@@ -41,5 +45,5 @@ export default function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/((?!api|_next|_vercel|.*\\..*).*)"]
+  matcher: ["/((?!_next|_vercel|.*\\..*).*)"]
 };
