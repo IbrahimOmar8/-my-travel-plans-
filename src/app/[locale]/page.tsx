@@ -88,12 +88,20 @@ export default function HomePage({
             {t("customTitle")}
           </h2>
           <p className="mt-4 max-w-2xl text-sand-100">{t("customBody")}</p>
-          <Link
-            href={`/${locale}/contact`}
-            className="btn-primary mt-8 bg-sand-300 text-nile-900 hover:bg-sand-200"
-          >
-            {t("customCta")}
-          </Link>
+          <div className="mt-8 flex flex-wrap gap-3">
+            <Link
+              href={`/${locale}/plan-trip`}
+              className="btn-primary bg-sand-300 text-nile-900 hover:bg-sand-200"
+            >
+              {t("customCta")}
+            </Link>
+            <Link
+              href={`/${locale}/contact`}
+              className="rounded-full border border-sand-300 px-6 py-3 text-sm font-semibold text-sand-100 hover:bg-white/5"
+            >
+              {t("customCta")} →
+            </Link>
+          </div>
         </div>
       </section>
     </>

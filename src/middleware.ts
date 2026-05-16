@@ -29,8 +29,20 @@ function isAdminAuthed(req: NextRequest) {
   return user === expectedUser && pass === expected;
 }
 
+const ROOT_BYPASS = new Set([
+  "/icon",
+  "/apple-icon",
+  "/opengraph-image",
+  "/sitemap.xml",
+  "/robots.txt",
+  "/manifest.webmanifest",
+  "/feed.xml"
+]);
+
 export default function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
+
+  if (ROOT_BYPASS.has(pathname)) return NextResponse.next();
 
   if (pathname.startsWith("/admin") || pathname.startsWith("/api/admin")) {
     if (!isAdminAuthed(req)) return unauthorized();

@@ -5,6 +5,7 @@ import { categoryLabel } from "@/lib/types";
 import type { Locale } from "@/i18n/config";
 import { Price } from "./Price";
 import { WishlistButton } from "./WishlistButton";
+import { CompareToggle } from "./CompareToggle";
 
 export function TourCard({ tour }: { tour: Tour }) {
   const locale = useLocale() as Locale;
@@ -63,6 +64,9 @@ export function TourCard({ tour }: { tour: Tour }) {
           >
             →
           </Link>
+        </div>
+        <div className="mt-3">
+          <CompareToggle tourSlug={tour.slug} />
         </div>
       </div>
     </article>

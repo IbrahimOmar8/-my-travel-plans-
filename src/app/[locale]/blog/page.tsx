@@ -51,6 +51,13 @@ export default async function BlogIndex({
         <p className="mt-3 max-w-2xl text-lg text-nile-800/80">
           {t("listSubtitle")}
         </p>
+        <a
+          href="/feed.xml"
+          className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-nile-600 hover:text-nile-700"
+        >
+          <span>RSS</span>
+          <span aria-hidden>→</span>
+        </a>
       </section>
 
       <section className="container-page pb-20">

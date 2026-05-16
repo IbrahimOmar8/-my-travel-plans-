@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { notFound } from "next/navigation";
 import { NextIntlClientProvider } from "next-intl";
 import {
@@ -10,8 +10,10 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { CurrencyProvider } from "@/components/CurrencyProvider";
 import { WishlistProvider } from "@/components/WishlistProvider";
+import { CompareProvider } from "@/components/CompareProvider";
 import { Analytics } from "@/components/Analytics";
 import { WhatsAppButton } from "@/components/WhatsAppButton";
+import { CompareBar } from "@/components/CompareBar";
 import { CookieConsent } from "@/components/CookieConsent";
 import { organizationLd, jsonLd } from "@/lib/structured-data";
 import { locales, type Locale } from "@/i18n/config";
@@ -35,6 +37,12 @@ export async function generateMetadata({
       template: "%s · Nile Horizons"
     },
     description: t("subtitle"),
+    applicationName: "Nile Horizons",
+    appleWebApp: {
+      capable: true,
+      statusBarStyle: "default",
+      title: "Nile Horizons"
+    },
     alternates: {
       canonical: `${siteUrl}/${locale}`,
       languages: Object.fromEntries(locales.map((l) => [l, `${siteUrl}/${l}`]))
@@ -49,6 +57,12 @@ export async function generateMetadata({
     }
   };
 }
+
+export const viewport: Viewport = {
+  themeColor: "#0f2039",
+  width: "device-width",
+  initialScale: 1
+};
 
 export default async function LocaleLayout({
   children,
@@ -84,11 +98,14 @@ export default async function LocaleLayout({
         <NextIntlClientProvider locale={locale} messages={messages}>
           <CurrencyProvider locale={locale}>
             <WishlistProvider>
-              <Header />
-              <main className="flex-1">{children}</main>
-              <Footer />
-              <WhatsAppButton />
-              <CookieConsent />
+              <CompareProvider>
+                <Header />
+                <main className="flex-1">{children}</main>
+                <Footer />
+                <CompareBar />
+                <WhatsAppButton />
+                <CookieConsent />
+              </CompareProvider>
             </WishlistProvider>
           </CurrencyProvider>
         </NextIntlClientProvider>

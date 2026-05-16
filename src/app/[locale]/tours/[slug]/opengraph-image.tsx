@@ -38,6 +38,7 @@ export default async function Image({
         }}
       >
         {cover ? (
+          // eslint-disable-next-line jsx-a11y/alt-text
           <img
             src={cover}
             width={1200}

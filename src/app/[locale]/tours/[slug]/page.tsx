@@ -14,6 +14,8 @@ import { StarRating } from "@/components/StarRating";
 import { FAQ } from "@/components/FAQ";
 import { ImageGallery } from "@/components/ImageGallery";
 import { WishlistButton } from "@/components/WishlistButton";
+import { AvailabilityCalendar } from "@/components/AvailabilityCalendar";
+import { getAvailability } from "@/data/availability";
 import { categoryLabel } from "@/lib/types";
 import { listApprovedReviews, aggregateForTour } from "@/lib/reviews";
 import { tourLd, breadcrumbLd, jsonLd } from "@/lib/structured-data";
@@ -64,6 +66,7 @@ export default async function TourPage({ params }: Params) {
   const reviews = await listApprovedReviews(tour.slug);
   const aggregate = await aggregateForTour(tour.slug);
   const gallery = getGallery(tour);
+  const departures = getAvailability(tour.slug);
   const related = tours
     .filter((x) => x.slug !== tour.slug)
     .sort((a, b) => {
@@ -198,6 +201,7 @@ export default async function TourPage({ params }: Params) {
           </div>
 
           <aside className="space-y-6">
+            <AvailabilityCalendar departures={departures} />
             <div className="rounded-2xl border border-sand-200 bg-white p-6 shadow-sm">
               <p className="text-xs uppercase tracking-wider text-sand-600">
                 {t("from")}
