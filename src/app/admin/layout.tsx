@@ -14,6 +14,8 @@ export default function AdminLayout({
     { href: "/admin", label: "Overview" },
     { href: "/admin/inquiries", label: "Inquiries" },
     { href: "/admin/bookings", label: "Bookings" },
+    { href: "/admin/reviews", label: "Reviews" },
+    { href: "/admin/subscribers", label: "Subscribers" },
     { href: "/admin/tours", label: "Tours" }
   ];
 

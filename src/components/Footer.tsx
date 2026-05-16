@@ -1,13 +1,26 @@
 import Link from "next/link";
 import { useTranslations, useLocale } from "next-intl";
+import { NewsletterForm } from "./NewsletterForm";
 
 export function Footer() {
   const t = useTranslations("footer");
   const tNav = useTranslations("nav");
+  const tNews = useTranslations("newsletter");
   const locale = useLocale();
 
   return (
     <footer className="mt-24 border-t border-sand-200 bg-nile-900 text-sand-100">
+      <div className="container-page border-b border-nile-800 py-10">
+        <div className="grid items-center gap-6 md:grid-cols-2">
+          <div>
+            <h3 className="font-display text-2xl font-semibold text-white">
+              {tNews("title")}
+            </h3>
+            <p className="mt-1 text-sm text-sand-200">{tNews("subtitle")}</p>
+          </div>
+          <NewsletterForm source="footer" />
+        </div>
+      </div>
       <div className="container-page grid gap-10 py-14 md:grid-cols-4">
         <div>
           <h3 className="font-display text-2xl font-semibold">

@@ -1,14 +1,21 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { useTranslations } from "next-intl";
-import { unstable_setRequestLocale } from "next-intl/server";
+import { unstable_setRequestLocale, getTranslations } from "next-intl/server";
 import { tours, getTour } from "@/data/tours";
 import { getDestination } from "@/data/destinations";
 import { InquiryForm } from "@/components/InquiryForm";
 import { BookButton } from "@/components/BookButton";
 import { Price } from "@/components/Price";
+import { TourCard } from "@/components/TourCard";
+import { ReviewList } from "@/components/ReviewList";
+import { ReviewForm } from "@/components/ReviewForm";
+import { StarRating } from "@/components/StarRating";
+import { FAQ } from "@/components/FAQ";
 import { categoryLabel } from "@/lib/types";
+import { listApprovedReviews, aggregateForTour } from "@/lib/reviews";
+import { tourLd, breadcrumbLd, jsonLd } from "@/lib/structured-data";
+import { tourFAQ } from "@/data/faq";
 import { locales, type Locale } from "@/i18n/config";
 import { siteUrl } from "@/lib/site";
 
@@ -44,13 +51,23 @@ export function generateMetadata({ params }: Params): Metadata {
   };
 }
 
-export default function TourPage({ params }: Params) {
+export default async function TourPage({ params }: Params) {
   unstable_setRequestLocale(params.locale);
   const tour = getTour(params.slug);
   if (!tour) notFound();
   const locale = params.locale as Locale;
-  const t = useTranslations("tour");
+  const t = await getTranslations({ locale, namespace: "tour" });
   const destination = getDestination(tour.destinationSlug);
+  const reviews = await listApprovedReviews(tour.slug);
+  const aggregate = await aggregateForTour(tour.slug);
+  const related = tours
+    .filter((x) => x.slug !== tour.slug)
+    .sort((a, b) => {
+      const aMatch = a.destinationSlug === tour.destinationSlug ? -1 : 0;
+      const bMatch = b.destinationSlug === tour.destinationSlug ? -1 : 0;
+      return aMatch - bMatch;
+    })
+    .slice(0, 3);
 
   return (
     <article>
@@ -78,9 +95,16 @@ export default function TourPage({ params }: Params) {
             </Badge>
             <Badge>{categoryLabel[tour.category][locale]}</Badge>
             <Badge>{tour.groupSize[locale]}</Badge>
-            <span>
-              ★ {tour.rating.toFixed(1)} ({tour.reviewCount} {t("reviews")})
-            </span>
+            {aggregate.count > 0 ? (
+              <span>
+                ★ {aggregate.average.toFixed(1)} ({aggregate.count}{" "}
+                {t("reviews")})
+              </span>
+            ) : (
+              <span>
+                ★ {tour.rating.toFixed(1)} ({tour.reviewCount} {t("reviews")})
+              </span>
+            )}
           </div>
         </div>
       </section>
@@ -193,10 +217,85 @@ export default function TourPage({ params }: Params) {
           </aside>
         </div>
 
+        <div className="mt-20">
+          <div className="flex flex-wrap items-end justify-between gap-4">
+            <div>
+              <h2 className="font-display text-3xl font-semibold text-nile-900">
+                {t("reviewsTitle")}
+              </h2>
+              {aggregate.count > 0 && (
+                <div className="mt-2 flex items-center gap-2 text-sm text-nile-700">
+                  <StarRating value={aggregate.average} size="md" />
+                  <span className="font-semibold text-nile-900">
+                    {aggregate.average.toFixed(1)}
+                  </span>
+                  <span>
+                    · {aggregate.count} {t("reviews")}
+                  </span>
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="mt-6 grid gap-6 lg:grid-cols-3">
+            <div className="space-y-4 lg:col-span-2">
+              {reviews.length > 0 ? (
+                <ReviewList reviews={reviews} locale={locale} />
+              ) : (
+                <p className="rounded-2xl border border-sand-200 bg-white p-6 text-sm text-nile-700 shadow-sm">
+                  {t("noReviewsYet")}
+                </p>
+              )}
+            </div>
+            <div>
+              <ReviewForm tourSlug={tour.slug} />
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-20">
+          <FAQ items={tourFAQ[locale]} />
+        </div>
+
+        {related.length > 0 && (
+          <div className="mt-20">
+            <h2 className="font-display text-3xl font-semibold text-nile-900">
+              {t("relatedTitle")}
+            </h2>
+            <div className="mt-6 grid gap-6 md:grid-cols-3">
+              {related.map((r) => (
+                <TourCard key={r.slug} tour={r} />
+              ))}
+            </div>
+          </div>
+        )}
+
         <div id="inquiry" className="mt-20 max-w-3xl">
           <InquiryForm tourTitle={tour.title[locale]} tourSlug={tour.slug} />
         </div>
       </section>
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: jsonLd(tourLd(tour, locale, aggregate, reviews))
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: jsonLd(
+            breadcrumbLd([
+              { name: "Home", url: `${siteUrl}/${locale}` },
+              { name: "Tours", url: `${siteUrl}/${locale}/tours` },
+              {
+                name: tour.title[locale],
+                url: `${siteUrl}/${locale}/tours/${tour.slug}`
+              }
+            ])
+          )
+        }}
+      />
     </article>
   );
 }

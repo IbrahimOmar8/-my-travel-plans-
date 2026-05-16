@@ -105,7 +105,38 @@
     "requestQuote": "Fiyat teklifi al",
     "bookNow": "Şimdi rezerve et — %20 depozito",
     "chatWhatsapp": "WhatsApp'tan yaz",
-    "reviews": "yorum"
+    "reviews": "yorum",
+    "reviewsTitle": "Misafirler ne diyor",
+    "noReviewsYet": "Henüz yorum yok — ilk siz olun.",
+    "faqTitle": "Sık sorulan sorular",
+    "relatedTitle": "Şunları da beğenebilirsiniz"
+  },
+  "reviews": {
+    "writeTitle": "Bizimle seyahat ettiniz mi? Bir yorum bırakın",
+    "namePlaceholder": "Adınız",
+    "countryPlaceholder": "Ülke (opsiyonel)",
+    "titlePlaceholder": "Başlık (opsiyonel)",
+    "bodyPlaceholder": "Sizi en çok ne etkiledi? Ne daha iyi olabilirdi?",
+    "emailPlaceholder": "E-posta — yayımlanmaz, sadece doğrulama için",
+    "submit": "Yorumu gönder",
+    "sending": "Gönderiliyor…",
+    "thanks": "Yorum için teşekkürler.",
+    "thanksBody": "Her yorumu modere ediyoruz — onay sonrası yayımlanacak.",
+    "moderation": "Yorumlar yayımlanmadan önce moderasyondan geçer.",
+    "error": "Bir sorun oluştu. Lütfen tekrar deneyin."
+  },
+  "newsletter": {
+    "title": "Nil'den saha notları",
+    "subtitle": "Pratik rehberler, sezon ipuçları ve sakin oda fiyatları — ayda bir, spam yok.",
+    "placeholder": "siz@email.com",
+    "submit": "Abone ol",
+    "thanks": "Tamam. Gelen kutunuzu kontrol edin.",
+    "error": "Bir sorun oluştu."
+  },
+  "whatsapp": {
+    "label": "WhatsApp",
+    "aria": "WhatsApp'tan bize yazın",
+    "prefill": "Merhaba Nile Horizons — bir tur hakkında soru sormak istiyorum."
   },
   "form": {
     "title": "Fiyat teklifi al",

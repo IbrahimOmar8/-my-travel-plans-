@@ -10,6 +10,8 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { CurrencyProvider } from "@/components/CurrencyProvider";
 import { Analytics } from "@/components/Analytics";
+import { WhatsAppButton } from "@/components/WhatsAppButton";
+import { organizationLd, jsonLd } from "@/lib/structured-data";
 import { locales, type Locale } from "@/i18n/config";
 import { siteUrl } from "@/lib/site";
 import "../globals.css";
@@ -73,11 +75,16 @@ export default async function LocaleLayout({
       </head>
       <body className="min-h-screen flex flex-col">
         <Analytics />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: jsonLd(organizationLd()) }}
+        />
         <NextIntlClientProvider locale={locale} messages={messages}>
           <CurrencyProvider locale={locale}>
             <Header />
             <main className="flex-1">{children}</main>
             <Footer />
+            <WhatsAppButton />
           </CurrencyProvider>
         </NextIntlClientProvider>
       </body>

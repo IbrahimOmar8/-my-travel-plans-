@@ -8,6 +8,7 @@ import {
 import { getPost, listAllSlugs, listPosts } from "@/lib/blog";
 import { locales, type Locale } from "@/i18n/config";
 import { siteUrl } from "@/lib/site";
+import { blogPostingLd, breadcrumbLd, jsonLd } from "@/lib/structured-data";
 
 type Params = { params: { locale: string; slug: string } };
 
@@ -67,6 +68,37 @@ export default async function BlogPost({ params }: Params) {
 
   return (
     <article className="bg-sand-50">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: jsonLd(
+            blogPostingLd({
+              title: post.title,
+              excerpt: post.excerpt,
+              date: post.date,
+              cover: post.cover,
+              author: post.author,
+              slug: post.slug,
+              locale: params.locale as Locale
+            })
+          )
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: jsonLd(
+            breadcrumbLd([
+              { name: "Home", url: `${siteUrl}/${params.locale}` },
+              { name: "Journal", url: `${siteUrl}/${params.locale}/blog` },
+              {
+                name: post.title,
+                url: `${siteUrl}/${params.locale}/blog/${post.slug}`
+              }
+            ])
+          )
+        }}
+      />
       <div className="relative h-72 w-full overflow-hidden sm:h-96">
         <img
           src={post.cover}

@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 import { listInquiries, listBookings } from "@/lib/storage";
+import { listAllReviews } from "@/lib/reviews";
+import { listSubscribers } from "@/lib/subscribers";
 
 function csvEscape(v: unknown): string {
   if (v === null || v === undefined) return "";
@@ -48,5 +50,36 @@ export async function GET(req: Request) {
     });
   }
 
-  return NextResponse.json({ error: "type must be 'inquiries' or 'bookings'" }, { status: 400 });
+  if (type === "reviews") {
+    const rows = await listAllReviews();
+    const csv = toCsv(
+      ["id", "createdAt", "status", "tourSlug", "rating", "name", "country", "title", "body", "email", "locale"],
+      rows.map((r) => ({ ...r, createdAt: r.createdAt.toISOString() }))
+    );
+    return new NextResponse(csv, {
+      headers: {
+        "Content-Type": "text/csv; charset=utf-8",
+        "Content-Disposition": `attachment; filename="reviews-${new Date().toISOString().slice(0, 10)}.csv"`
+      }
+    });
+  }
+
+  if (type === "subscribers") {
+    const rows = await listSubscribers();
+    const csv = toCsv(
+      ["email", "createdAt", "locale", "source"],
+      rows.map((r) => ({ ...r, createdAt: r.createdAt.toISOString() }))
+    );
+    return new NextResponse(csv, {
+      headers: {
+        "Content-Type": "text/csv; charset=utf-8",
+        "Content-Disposition": `attachment; filename="subscribers-${new Date().toISOString().slice(0, 10)}.csv"`
+      }
+    });
+  }
+
+  return NextResponse.json(
+    { error: "type must be one of: inquiries, bookings, reviews, subscribers" },
+    { status: 400 }
+  );
 }

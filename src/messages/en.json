@@ -105,7 +105,38 @@
     "requestQuote": "Request a quote",
     "bookNow": "Book now — pay 20% deposit",
     "chatWhatsapp": "Chat on WhatsApp",
-    "reviews": "reviews"
+    "reviews": "reviews",
+    "reviewsTitle": "What guests are saying",
+    "noReviewsYet": "No reviews yet — be the first.",
+    "faqTitle": "Frequently asked questions",
+    "relatedTitle": "You might also like"
+  },
+  "reviews": {
+    "writeTitle": "Travelled with us? Leave a review",
+    "namePlaceholder": "Your name",
+    "countryPlaceholder": "Country (optional)",
+    "titlePlaceholder": "Headline (optional)",
+    "bodyPlaceholder": "What stood out? What could have been better?",
+    "emailPlaceholder": "Email — kept private, for verification only",
+    "submit": "Submit review",
+    "sending": "Sending…",
+    "thanks": "Thanks for the review.",
+    "thanksBody": "We moderate every review — yours will appear once approved.",
+    "moderation": "Reviews are moderated before they go public.",
+    "error": "Something went wrong. Please try again."
+  },
+  "newsletter": {
+    "title": "Field notes from the Nile",
+    "subtitle": "Practical guides, season tips, and quiet-room rates — once a month, no spam.",
+    "placeholder": "you@email.com",
+    "submit": "Subscribe",
+    "thanks": "You're in. Watch your inbox.",
+    "error": "Something went wrong."
+  },
+  "whatsapp": {
+    "label": "WhatsApp",
+    "aria": "Chat with us on WhatsApp",
+    "prefill": "Hi Nile Horizons — I'd like to ask about a tour."
   },
   "form": {
     "title": "Request a quote",

@@ -8,6 +8,7 @@ import { getToursByDestination } from "@/data/tours";
 import { TourCard } from "@/components/TourCard";
 import { locales, type Locale } from "@/i18n/config";
 import { siteUrl } from "@/lib/site";
+import { destinationLd, breadcrumbLd, jsonLd } from "@/lib/structured-data";
 
 type Params = { params: { locale: string; slug: string } };
 
@@ -53,6 +54,27 @@ export default function DestinationPage({ params }: Params) {
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: jsonLd(destinationLd(destination, locale))
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: jsonLd(
+            breadcrumbLd([
+              { name: "Home", url: `${siteUrl}/${locale}` },
+              { name: "Destinations", url: `${siteUrl}/${locale}/destinations` },
+              {
+                name: destination.name[locale],
+                url: `${siteUrl}/${locale}/destinations/${destination.slug}`
+              }
+            ])
+          )
+        }}
+      />
       <section className="relative isolate overflow-hidden">
         <div
           className="absolute inset-0 -z-10 bg-cover bg-center"

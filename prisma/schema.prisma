@@ -40,3 +40,28 @@ model Booking {
   @@index([createdAt])
   @@index([status])
 }
+
+model Review {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  tourSlug  String
+  name      String
+  country   String?
+  rating    Int
+  title     String?
+  body      String
+  status    String   @default("pending")
+  email     String?
+  locale    String?
+
+  @@index([tourSlug, status])
+  @@index([status])
+}
+
+model Subscriber {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  email     String   @unique
+  locale    String?
+  source    String?
+}
