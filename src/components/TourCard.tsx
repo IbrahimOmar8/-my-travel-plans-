@@ -4,13 +4,15 @@ import type { Tour } from "@/lib/types";
 import { categoryLabel } from "@/lib/types";
 import type { Locale } from "@/i18n/config";
 import { Price } from "./Price";
+import { WishlistButton } from "./WishlistButton";
 
 export function TourCard({ tour }: { tour: Tour }) {
   const locale = useLocale() as Locale;
   const t = useTranslations("tour");
 
   return (
-    <article className="flex flex-col overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-black/5 transition hover:-translate-y-1 hover:shadow-lg">
+    <article className="relative flex flex-col overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-black/5 transition hover:-translate-y-1 hover:shadow-lg">
+      <WishlistButton tourSlug={tour.slug} variant="card" />
       <Link
         href={`/${locale}/tours/${tour.slug}`}
         className="relative block aspect-[16/10] overflow-hidden"
@@ -22,7 +24,7 @@ export function TourCard({ tour }: { tour: Tour }) {
         <span className="absolute left-4 top-4 rounded-full bg-white/90 px-3 py-1 text-xs font-semibold text-nile-800">
           {categoryLabel[tour.category][locale]}
         </span>
-        <span className="absolute right-4 top-4 rounded-full bg-nile-900/80 px-3 py-1 text-xs font-semibold text-white">
+        <span className="absolute right-4 bottom-4 rounded-full bg-nile-900/80 px-3 py-1 text-xs font-semibold text-white">
           {tour.durationDays} {t("day").toLowerCase()}
         </span>
       </Link>

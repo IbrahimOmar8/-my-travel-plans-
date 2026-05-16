@@ -2,6 +2,8 @@ import Link from "next/link";
 import { useTranslations, useLocale } from "next-intl";
 import { LocaleSwitcher } from "./LocaleSwitcher";
 import { CurrencySwitcher } from "./CurrencySwitcher";
+import { HeaderSearch } from "./HeaderSearch";
+import { WishlistHeaderLink } from "./WishlistHeaderLink";
 import { MobileMenu } from "./MobileMenu";
 
 export function Header() {
@@ -38,6 +40,8 @@ export function Header() {
         </nav>
 
         <div className="flex items-center gap-2 sm:gap-3">
+          <HeaderSearch />
+          <WishlistHeaderLink />
           <div className="hidden sm:block">
             <CurrencySwitcher />
           </div>

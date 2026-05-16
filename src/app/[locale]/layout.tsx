@@ -9,8 +9,10 @@ import {
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { CurrencyProvider } from "@/components/CurrencyProvider";
+import { WishlistProvider } from "@/components/WishlistProvider";
 import { Analytics } from "@/components/Analytics";
 import { WhatsAppButton } from "@/components/WhatsAppButton";
+import { CookieConsent } from "@/components/CookieConsent";
 import { organizationLd, jsonLd } from "@/lib/structured-data";
 import { locales, type Locale } from "@/i18n/config";
 import { siteUrl } from "@/lib/site";
@@ -81,10 +83,13 @@ export default async function LocaleLayout({
         />
         <NextIntlClientProvider locale={locale} messages={messages}>
           <CurrencyProvider locale={locale}>
-            <Header />
-            <main className="flex-1">{children}</main>
-            <Footer />
-            <WhatsAppButton />
+            <WishlistProvider>
+              <Header />
+              <main className="flex-1">{children}</main>
+              <Footer />
+              <WhatsAppButton />
+              <CookieConsent />
+            </WishlistProvider>
           </CurrencyProvider>
         </NextIntlClientProvider>
       </body>

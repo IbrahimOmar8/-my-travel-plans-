@@ -27,7 +27,16 @@
     "anywhere": "Anywhere in Egypt & MENA",
     "date": "Travel date",
     "travelers": "Travellers",
-    "submit": "Search tours"
+    "submit": "Search",
+    "eyebrow": "Search",
+    "title": "Find your trip",
+    "subtitle": "Search across tours, destinations and the journal.",
+    "placeholder": "Try \"Petra\", \"Nile cruise\" or \"Luxor\"",
+    "openSearch": "Open search",
+    "resultsFor": "Results for",
+    "matchCount": "{count, plural, one {# result} other {# results}}",
+    "noResults": "No matches yet. Try a broader keyword.",
+    "typeAtLeast": "Type at least two characters."
   },
   "trustBar": {
     "happy": "Happy travellers",
@@ -109,7 +118,38 @@
     "reviewsTitle": "What guests are saying",
     "noReviewsYet": "No reviews yet — be the first.",
     "faqTitle": "Frequently asked questions",
-    "relatedTitle": "You might also like"
+    "relatedTitle": "You might also like",
+    "printIt": "Print itinerary",
+    "backToTour": "Back to tour",
+    "printableItinerary": "Printable itinerary"
+  },
+  "wishlist": {
+    "eyebrow": "Wishlist",
+    "title": "Your saved trips",
+    "subtitle": "Tours you tagged for later. Saved on this device only — no sign-in needed.",
+    "add": "Save",
+    "saved": "Saved",
+    "remove": "Remove from wishlist",
+    "empty": "Nothing saved yet.",
+    "emptyBody": "Tap the heart on any tour to keep it here for later.",
+    "browseTours": "Browse tours"
+  },
+  "cookies": {
+    "body": "We use minimal, cookie-less analytics and only store your language and currency choice on your device.",
+    "learnMore": "Privacy notice",
+    "accept": "Got it"
+  },
+  "privacy": {
+    "title": "Privacy notice",
+    "intro": "We aim to collect the minimum amount of personal information needed to plan and run your trip — and to never share it.",
+    "collectTitle": "What we collect",
+    "collectBody": "When you submit an inquiry, leave a review, subscribe to the newsletter or pay a deposit, we store the details you give us (name, email, country, travel preferences). Payment cards are handled entirely by Stripe — we never see the card number.",
+    "analyticsTitle": "Analytics",
+    "analyticsBody": "We use Plausible Analytics, which is cookie-less and aggregates traffic at the page level. No personal profile is built and no data is shared with third parties for advertising.",
+    "storageTitle": "Local storage on your device",
+    "storageBody": "Your selected language, currency, wishlist and cookie-banner preference are stored in your browser's local storage. They do not leave your device.",
+    "contactTitle": "Contact",
+    "contactBody": "To access, export or delete your data, email hello@nilehorizons.example with the address you used to contact us."
   },
   "reviews": {
     "writeTitle": "Travelled with us? Leave a review",

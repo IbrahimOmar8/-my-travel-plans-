@@ -27,7 +27,16 @@
     "anywhere": "Mısır ve Orta Doğu'nun her yeri",
     "date": "Seyahat tarihi",
     "travelers": "Yolcu sayısı",
-    "submit": "Tur ara"
+    "submit": "Ara",
+    "eyebrow": "Arama",
+    "title": "Seyahatinizi bulun",
+    "subtitle": "Turlarda, destinasyonlarda ve günlükte arayın.",
+    "placeholder": "\"Petra\", \"Nil kruvaziyer\" veya \"Luksor\" deneyin",
+    "openSearch": "Aramayı aç",
+    "resultsFor": "Sonuçlar",
+    "matchCount": "{count, plural, one {# sonuç} other {# sonuç}}",
+    "noResults": "Sonuç yok. Daha geniş bir anahtar kelime deneyin.",
+    "typeAtLeast": "En az iki karakter yazın."
   },
   "trustBar": {
     "happy": "Mutlu yolcu",
@@ -109,7 +118,38 @@
     "reviewsTitle": "Misafirler ne diyor",
     "noReviewsYet": "Henüz yorum yok — ilk siz olun.",
     "faqTitle": "Sık sorulan sorular",
-    "relatedTitle": "Şunları da beğenebilirsiniz"
+    "relatedTitle": "Şunları da beğenebilirsiniz",
+    "printIt": "Programı yazdır",
+    "backToTour": "Tura geri dön",
+    "printableItinerary": "Yazdırılabilir program"
+  },
+  "wishlist": {
+    "eyebrow": "İstek listesi",
+    "title": "Kaydedilen seyahatleriniz",
+    "subtitle": "Sonra için işaretlediğiniz turlar. Yalnızca bu cihazda — giriş gerekmez.",
+    "add": "Kaydet",
+    "saved": "Kaydedildi",
+    "remove": "İstek listesinden çıkar",
+    "empty": "Henüz kayıtlı bir şey yok.",
+    "emptyBody": "Sonra dönmek için herhangi bir tur üzerindeki kalbe dokunun.",
+    "browseTours": "Turlara göz at"
+  },
+  "cookies": {
+    "body": "Minimum ve çerezsiz analiz kullanıyoruz; yalnızca dil ve para birimi tercihinizi cihazınızda saklıyoruz.",
+    "learnMore": "Gizlilik bildirimi",
+    "accept": "Tamam"
+  },
+  "privacy": {
+    "title": "Gizlilik bildirimi",
+    "intro": "Yalnızca seyahatinizi planlamak ve yürütmek için gerekli olan asgari kişisel bilgiyi toplamayı ve bunu asla paylaşmamayı amaçlıyoruz.",
+    "collectTitle": "Topladıklarımız",
+    "collectBody": "Sorgu gönderdiğinizde, yorum bıraktığınızda, bültene abone olduğunuzda veya depozito ödediğinizde verdiğiniz bilgileri (ad, e-posta, ülke, seyahat tercihleri) saklarız. Ödeme kartları tamamen Stripe tarafından işlenir — kart numarasını biz görmeyiz.",
+    "analyticsTitle": "Analitik",
+    "analyticsBody": "Çerezsiz çalışan ve trafiği sayfa düzeyinde toplayan Plausible Analytics kullanıyoruz. Kişisel profil oluşturulmaz ve veriler reklam için üçüncü taraflarla paylaşılmaz.",
+    "storageTitle": "Cihazınızda depolama",
+    "storageBody": "Dil, para birimi, istek listesi ve çerez tercihiniz tarayıcınızın yerel deposunda tutulur. Cihazınızdan ayrılmaz.",
+    "contactTitle": "İletişim",
+    "contactBody": "Verilerinize erişmek, dışa aktarmak veya silmek için bizimle iletişime geçtiğiniz adresten hello@nilehorizons.example adresine yazın."
   },
   "reviews": {
     "writeTitle": "Bizimle seyahat ettiniz mi? Bir yorum bırakın",

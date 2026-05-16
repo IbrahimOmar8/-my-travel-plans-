@@ -12,10 +12,13 @@ import { ReviewList } from "@/components/ReviewList";
 import { ReviewForm } from "@/components/ReviewForm";
 import { StarRating } from "@/components/StarRating";
 import { FAQ } from "@/components/FAQ";
+import { ImageGallery } from "@/components/ImageGallery";
+import { WishlistButton } from "@/components/WishlistButton";
 import { categoryLabel } from "@/lib/types";
 import { listApprovedReviews, aggregateForTour } from "@/lib/reviews";
 import { tourLd, breadcrumbLd, jsonLd } from "@/lib/structured-data";
 import { tourFAQ } from "@/data/faq";
+import { getGallery } from "@/data/galleries";
 import { locales, type Locale } from "@/i18n/config";
 import { siteUrl } from "@/lib/site";
 
@@ -60,6 +63,7 @@ export default async function TourPage({ params }: Params) {
   const destination = getDestination(tour.destinationSlug);
   const reviews = await listApprovedReviews(tour.slug);
   const aggregate = await aggregateForTour(tour.slug);
+  const gallery = getGallery(tour);
   const related = tours
     .filter((x) => x.slug !== tour.slug)
     .sort((a, b) => {
@@ -110,6 +114,11 @@ export default async function TourPage({ params }: Params) {
       </section>
 
       <section className="container-page py-16">
+        {gallery.length > 1 && (
+          <div className="mb-12">
+            <ImageGallery images={gallery} alt={tour.title[locale]} />
+          </div>
+        )}
         <div className="grid gap-12 lg:grid-cols-3">
           <div className="space-y-12 lg:col-span-2">
             <div>
@@ -207,9 +216,17 @@ export default async function TourPage({ params }: Params) {
               <a href="#inquiry" className="btn-secondary mt-3 w-full">
                 {t("requestQuote")}
               </a>
+              <WishlistButton tourSlug={tour.slug} />
+              <Link
+                href={`/${locale}/tours/${tour.slug}/print`}
+                target="_blank"
+                className="mt-3 block text-center text-sm font-semibold text-nile-600 hover:text-nile-700"
+              >
+                🖨 {t("printIt")}
+              </Link>
               <a
                 href="https://wa.me/201000000000"
-                className="mt-3 block text-center text-sm font-semibold text-nile-600 hover:text-nile-700"
+                className="mt-2 block text-center text-sm font-semibold text-nile-600 hover:text-nile-700"
               >
                 {t("chatWhatsapp")}
               </a>

@@ -37,6 +37,7 @@ export type Tour = {
   rating: number;
   reviewCount: number;
   image: string;
+  gallery?: string[];
   groupSize: LocalizedString;
   title: LocalizedString;
   summary: LocalizedString;
