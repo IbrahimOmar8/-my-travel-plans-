@@ -12,6 +12,7 @@ export default function AdminLayout({
 }) {
   const nav = [
     { href: "/admin", label: "Overview" },
+    { href: "/admin/analytics", label: "Analytics" },
     { href: "/admin/inquiries", label: "Inquiries" },
     { href: "/admin/bookings", label: "Bookings" },
     { href: "/admin/reviews", label: "Reviews" },

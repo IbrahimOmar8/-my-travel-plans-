@@ -99,6 +99,14 @@ export function ReviewForm({ tourSlug }: { tourSlug: string }) {
           placeholder={t("emailPlaceholder")}
           className="rounded-lg border border-sand-200 bg-white px-3 py-2 text-sm focus:border-nile-500 focus:outline-none sm:col-span-2"
         />
+        <input
+          type="text"
+          name="website"
+          tabIndex={-1}
+          autoComplete="off"
+          className="absolute -left-[10000px] h-0 w-0"
+          aria-hidden="true"
+        />
       </div>
 
       <button

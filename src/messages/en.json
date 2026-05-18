@@ -3,8 +3,10 @@
     "destinations": "Destinations",
     "tours": "Tours",
     "journal": "Journal",
+    "team": "Team",
     "about": "About",
     "contact": "Contact",
+    "myTrip": "Check my booking",
     "browseTours": "Browse tours"
   },
   "blog": {
@@ -96,7 +98,23 @@
     "matchCount": "{count, plural, =0 {No tours match your filters.} one {# tour matches your filters.} other {# tours match your filters.}}",
     "missing": "Anything missing?",
     "tellUs": "Tell us what you're looking for →",
+    "destinationFilter": "Where",
     "allDestinations": "All destinations",
+    "styleFilter": "Style",
+    "anyStyle": "Any",
+    "durationFilter": "Length",
+    "anyDuration": "Any",
+    "short": "1-5 days",
+    "medium": "6-9 days",
+    "long": "10+ days",
+    "priceFilter": "Max price",
+    "anyPrice": "Any",
+    "sortBy": "Sort",
+    "popular": "Popular",
+    "rating": "Top rated",
+    "priceAsc": "Price ↑",
+    "priceDesc": "Price ↓",
+    "clearAll": "Clear ({count})",
     "noResults": "No tours match those filters yet."
   },
   "tour": {
@@ -300,6 +318,7 @@
     "explore": "Explore",
     "contact": "Contact",
     "trust": "Trust",
+    "privacy": "Privacy notice",
     "rights": "All rights reserved."
   },
   "booking": {
@@ -313,6 +332,41 @@
   "notFound": {
     "title": "That page wandered off into the desert.",
     "body": "Let's get you back on the map.",
-    "cta": "Back to home"
+    "cta": "Back to home",
+    "ctaTours": "Browse tours",
+    "ctaSearch": "Search the site"
+  },
+  "error": {
+    "title": "Something went sideways.",
+    "body": "Our team has been notified. You can retry, or head back home.",
+    "retry": "Try again",
+    "home": "Back to home"
+  },
+  "myTrip": {
+    "eyebrow": "My trip",
+    "title": "Check your booking",
+    "subtitle": "Look up the status of an existing booking with your reference and email.",
+    "bookingId": "Booking reference",
+    "email": "Email used at checkout",
+    "lookUp": "Look up booking",
+    "lookingUp": "Looking up…",
+    "lookupAnother": "Look up another",
+    "contactUs": "Email our team",
+    "bookingRef": "Booking reference",
+    "travelers": "Travellers",
+    "booked": "Booked on",
+    "deposit": "Deposit paid",
+    "total": "Trip total",
+    "status_paid": "Paid",
+    "status_pending": "Awaiting payment",
+    "status_cancelled": "Cancelled",
+    "hint": "Your booking reference was emailed to you right after the deposit was confirmed.",
+    "error": "Couldn't find a matching booking."
+  },
+  "team": {
+    "eyebrow": "Trip designers",
+    "title": "The humans planning your trip",
+    "subtitle": "We're a small team based in Cairo with permanent staff in Luxor and on the Red Sea. Every itinerary you receive has a name attached.",
+    "years": "yrs"
   }
 }

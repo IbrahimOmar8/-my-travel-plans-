@@ -105,6 +105,14 @@ export function InquiryForm({ tourTitle, tourSlug }: Props) {
             placeholder={t("notesPlaceholder")}
           />
         </label>
+        <input
+          type="text"
+          name="website"
+          tabIndex={-1}
+          autoComplete="off"
+          className="absolute -left-[10000px] h-0 w-0"
+          aria-hidden="true"
+        />
       </div>
 
       <button

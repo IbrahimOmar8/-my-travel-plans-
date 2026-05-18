@@ -10,6 +10,8 @@ const staticPaths = [
   "/destinations",
   "/tours",
   "/blog",
+  "/team",
+  "/plan-trip",
   "/about",
   "/contact"
 ];

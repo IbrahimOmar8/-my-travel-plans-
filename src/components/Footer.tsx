@@ -46,6 +46,9 @@ export function Footer() {
               <Link href={`/${locale}/about`}>{tNav("about")}</Link>
             </li>
             <li>
+              <Link href={`/${locale}/team`}>{tNav("team")}</Link>
+            </li>
+            <li>
               <Link href={`/${locale}/contact`}>{tNav("contact")}</Link>
             </li>
           </ul>
@@ -58,6 +61,14 @@ export function Footer() {
             <li>Cairo: +20 2 1234 5678</li>
             <li>WhatsApp 24/7: +20 100 000 0000</li>
             <li>hello@nilehorizons.example</li>
+            <li>
+              <Link
+                href={`/${locale}/my-trip`}
+                className="text-sand-300 hover:text-white"
+              >
+                {tNav("myTrip")} →
+              </Link>
+            </li>
           </ul>
         </div>
         <div>
@@ -68,6 +79,14 @@ export function Footer() {
             <li>IATA accredited #00-0 0000 0</li>
             <li>Egyptian Tourism Authority licensed</li>
             <li>Secure SSL payments</li>
+            <li>
+              <Link
+                href={`/${locale}/privacy`}
+                className="text-sand-300 hover:text-white"
+              >
+                {t("privacy")}
+              </Link>
+            </li>
           </ul>
         </div>
       </div>

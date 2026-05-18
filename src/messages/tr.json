@@ -3,8 +3,10 @@
     "destinations": "Destinasyonlar",
     "tours": "Turlar",
     "journal": "Günlük",
+    "team": "Ekip",
     "about": "Hakkımızda",
     "contact": "İletişim",
+    "myTrip": "Rezervasyonumu kontrol et",
     "browseTours": "Turlara göz at"
   },
   "blog": {
@@ -96,7 +98,23 @@
     "matchCount": "{count, plural, =0 {Filtrelerinize uyan tur yok.} one {# tur filtrelerinize uyuyor.} other {# tur filtrelerinize uyuyor.}}",
     "missing": "Aradığınızı bulamadınız mı?",
     "tellUs": "Ne aradığınızı bize anlatın →",
+    "destinationFilter": "Nereye",
     "allDestinations": "Tüm destinasyonlar",
+    "styleFilter": "Stil",
+    "anyStyle": "Hepsi",
+    "durationFilter": "Süre",
+    "anyDuration": "Hepsi",
+    "short": "1-5 gün",
+    "medium": "6-9 gün",
+    "long": "10+ gün",
+    "priceFilter": "Maks. fiyat",
+    "anyPrice": "Hepsi",
+    "sortBy": "Sırala",
+    "popular": "Popüler",
+    "rating": "Puana göre",
+    "priceAsc": "Fiyat ↑",
+    "priceDesc": "Fiyat ↓",
+    "clearAll": "Temizle ({count})",
     "noResults": "Bu filtrelere uyan tur henüz yok."
   },
   "tour": {
@@ -300,6 +318,7 @@
     "explore": "Keşfet",
     "contact": "İletişim",
     "trust": "Güvence",
+    "privacy": "Gizlilik",
     "rights": "Tüm hakları saklıdır."
   },
   "booking": {
@@ -313,6 +332,41 @@
   "notFound": {
     "title": "Bu sayfa çöle dalmış.",
     "body": "Sizi haritaya geri getirelim.",
-    "cta": "Anasayfa"
+    "cta": "Anasayfa",
+    "ctaTours": "Turlara göz at",
+    "ctaSearch": "Sitede ara"
+  },
+  "error": {
+    "title": "Bir şeyler ters gitti.",
+    "body": "Ekibimiz bilgilendirildi. Tekrar deneyebilir ya da anasayfaya dönebilirsiniz.",
+    "retry": "Tekrar dene",
+    "home": "Anasayfa"
+  },
+  "myTrip": {
+    "eyebrow": "Seyahatim",
+    "title": "Rezervasyonunuzu kontrol edin",
+    "subtitle": "Mevcut bir rezervasyonun durumunu referans ve e-posta ile sorgulayın.",
+    "bookingId": "Rezervasyon referansı",
+    "email": "Ödemede kullanılan e-posta",
+    "lookUp": "Rezervasyonu bul",
+    "lookingUp": "Aranıyor…",
+    "lookupAnother": "Başka bir tane ara",
+    "contactUs": "Ekibe yaz",
+    "bookingRef": "Rezervasyon referansı",
+    "travelers": "Yolcular",
+    "booked": "Rezervasyon tarihi",
+    "deposit": "Ödenen depozito",
+    "total": "Toplam tutar",
+    "status_paid": "Ödendi",
+    "status_pending": "Ödeme bekleniyor",
+    "status_cancelled": "İptal edildi",
+    "hint": "Rezervasyon referansınız, depozito onaylanır onaylanmaz e-posta ile gönderildi.",
+    "error": "Bu bilgilere uyan bir rezervasyon bulamadık."
+  },
+  "team": {
+    "eyebrow": "Tur tasarımcıları",
+    "title": "Seyahatinizi planlayan insanlar",
+    "subtitle": "Kahire merkezli küçük bir ekibiz, Luksor ve Kızıldeniz'de sabit kadromuz var. Aldığınız her programın bir ismi var.",
+    "years": "yıl"
   }
 }
